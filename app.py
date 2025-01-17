@@ -1,6 +1,7 @@
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+import streamlit as st
 from google.colab import drive
-from pyngrok import ngrok
-import os
 
 # 🔹 Montar o Google Drive
 drive.mount('/content/drive')
@@ -8,13 +9,6 @@ drive.mount('/content/drive')
 # 🔹 Caminho para o arquivo JSON dentro do Google Drive
 caminho_credenciais = "/content/drive/My Drive/Colab_Notebooks/credenciais.json"
 
-# 🔹 Criar o arquivo do Streamlit diretamente no Colab
-%%writefile app.py
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
-import streamlit as st
-
-# 🔹 Conectar ao Google Sheets
 def conectar_google_sheets():
     """ Conecta ao Google Sheets e retorna a aba 'REGISTRO'. """
     try:
@@ -38,7 +32,6 @@ def conectar_google_sheets():
         st.error(f"❌ Erro desconhecido: {e}")
         return None
 
-# 🔹 Função de verificação de IMEI
 def verificar_imei(imei):
     """ Verifica se o IMEI está na planilha e retorna a autorização. """
     planilha = conectar_google_sheets()
@@ -54,7 +47,7 @@ def verificar_imei(imei):
             return f"✅ Acesso Permitido: {registro['Nome']}"
     return "🚫 Acesso Negado: IMEI não cadastrado"
 
-# 🔹 Interface do Streamlit
+# App Streamlit
 st.title("Controle de Acesso - Verificação de IMEI")
 
 # 🔹 Entrada de IMEI
